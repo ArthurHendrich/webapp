@@ -30,8 +30,17 @@ pipeline {
                     wget 'https://raw.githubusercontent.com/ArthurHendrich/webapp/master/owasp-dependency-check.sh'
                     chmod +x owasp-dependency-check.sh
                     bash owasp-dependency-check.sh
+                    cat /var/lib/jenkins/OWASP-Dependency-Check/reports/dependency-check-report.xml
                 '''
-        
+            }
+        }
+
+        stage('Static Application Security (SAST) - SonarQube') {
+            steps {
+                withSonarQubeEnv('SonarQube') {
+                    sh 'mvn sonar:sonar'
+                    sh 'cat target/sonar/report-task.txt'
+                }
             }
         }
 
