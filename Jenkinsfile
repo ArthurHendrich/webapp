@@ -23,6 +23,18 @@ pipeline {
             }
         }
 
+        stage('Source Composition Analysis') {
+            steps {
+                sh '''
+                    rm owasp* || true
+                    wget 'https://raw.githubusercontent.com/ArthurHendrich/webapp/master/owasp-dependency-check.sh'
+                    chmod +x owasp-dependency-check.sh
+                    bash owasp-dependency-check.sh
+                '''
+        
+            }
+        }
+
         stage('Build') {
             steps {
                 sh 'mvn clean package'
